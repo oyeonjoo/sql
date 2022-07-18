@@ -43,7 +43,7 @@ from dual;
 
 select instr('Hello', 'l')
 from dual;
--- 문자가 있는지 확인하는 메소드
+-- 문자가 있는지 확인하는 메소드, 몇번째에 있는지 리턴해준다
 -- 0보다 크면 문자가 있고, 0이면 문자가 없다
 select instr('Hello', 'w')
 from dual;
@@ -55,6 +55,16 @@ from employees; -- salary를 써서 칼럼명을 써준다
 select rpad(salary, 5, '*')
 from employees;
 -- 5자리중에 오른쪽에 *을 넣겠다
+
+-- 과제] 사원들의 이름, 월급그래프를 조회하라.
+--      그래프는 $1000 당 * 하나를 표시한다.
+select last_name, rpad(' ', salary / 1000 + 1, '*')
+from employees;
+
+-- 과제] 위 그래프를 월급 기준 내림차순 정렬하라.
+select last_name, rpad(' ', salary / 1000 + 1, '*') sal
+from employees
+order by sal desc; -- 별명없이 salary만 작성해도된다(항목에 없어도 조회가능)
 
 select replace('JACK and JUE', 'J', 'BL')
 from dual;
@@ -163,13 +173,3 @@ from dual; -- 말일 계산
 select last_name, last_day(hire_date)
 from employees
 where months_between(sysdate, hire_date) >= 12 * 20;
-
--- 과제] 사원들의 이름, 월급그래프를 조회하라.
---      그래프는 $1000 당 * 하나를 표시한다.
-select last_name, rpad(' ', salary / 1000 + 1, '*')
-from employees;
-
--- 과제] 위 그래프를 월급 기준 내림차순 정렬하라.
-select last_name, rpad(' ', salary / 1000 + 1, '*') sal
-from employees
-order by sal desc; -- 별명없이 salary만 작성해도된다(항목에 없어도 조회가능)

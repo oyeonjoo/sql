@@ -12,11 +12,11 @@ where salary = '7000';
 
 select hire_date || ''
 from employees;
--- 날짜를 문자로 변환
+-- 날짜를 문자로 변환(붙이기 연산자)
 
 select salary || ''
 from employees;
--- 숫자를 문자로 변환
+-- 숫자를 문자로 변환(붙이기 연산자)
 -------------------------------------------------------------------------------------
 select to_char(hire_date)
 from employees;
@@ -37,6 +37,7 @@ select last_name, hire_date,
     to_char(hire_date, 'day'),
     to_char(hire_date,'d')
 from employees;
+
 -- 과제] 위 테이블을 월요일부터 입사일순 오름차순 정렬하라.
 select last_name, hire_date,
     to_char(hire_date, 'day') day
@@ -66,7 +67,7 @@ select to_char(salary, '$99,999.99') -- 9자리에 숫자가 들어간다, 소수점 둘째자리
 from employees
 where last_name = 'Ernst';
 
-select to_char(salary, '$99,999.99'),
+select to_char(salary, '$99,999.99'), -- 숫자 단위에 , 가 들어가면 문자가 된다
     to_char(salary, '$00,000.00')
 from employees
 where last_name = 'Ernst';
@@ -79,7 +80,7 @@ select '|' || to_char(12.12, 'fm9999.999') || '|', -- space를 줄여준다
     '|' || to_char(12.12, 'fm0000.000') || '|'
 from dual;
 
-select to_char(1237,'L9999') -- won쓰고 싶으면 L
+select to_char(1237, 'L9999') -- won쓰고 싶으면 L
 from dual;
 
 -- 과제] <이름> earns <$,월급> monthly but wants <$,월급x3>.로 조회하라.
@@ -94,7 +95,7 @@ where hire_date = to_date('Sep 21, 2005','fxMon dd yy'); -- Format eXtract - 형�
 
 select last_name, hire_date
 from employees
-where hire_date = to_date('Sep 21, 2005','fxMon dd, yyyy'); -- err x
+where hire_date = to_date('Sep 21, 2005','fxMon dd, yyyy');
 -- 문자를 날짜로
 
 select to_number('1237')
@@ -102,7 +103,7 @@ from dual;
 -- 문자를 숫자로
 
 select to_number('1,237.12')
-from dual; -- error , ','때문에 파싱을 못한다
+from dual; -- error , ','때문에 파싱을 못한다. 문자를 숫자로 못 바꾸고 있다
 
 select to_number('1,237.12', '9,999.99')
 from dual;
@@ -110,7 +111,7 @@ from dual;
 -------------------------------------------------------------------------------------
 
 -- null
-select nvl(null, 0) -- 내가 정한 값을 return
+select nvl(null, 0) -- null값을 내가 정한 값으로 return하겠다
 from dual;
 
 select job_id, nvl(commission_pct, 0) -- 하나의 칼럼을 구성하고 있어서 데이터 타입이 같아야 한다
@@ -199,7 +200,7 @@ select case salary when 1 then 1
                     when 2 then 2
                     else '0'
         end grade
-from employees;
+from employees; -- error
         
 select case salary when '1' then '1'
                     when 2 then '2'

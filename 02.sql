@@ -2,7 +2,7 @@
 
 select employee_id, last_name, department_id
 from employees
-where department_id = 90; -- 조건문
+where department_id = 90; -- 조건문(boolean type)
 
 -- 과제] 176번 사원의 이름과 부서번호를 조회하라.
 select employee_id, last_name, department_id
@@ -49,7 +49,7 @@ where hire_date between '2002/01/01' and '2002/12/31';
 -------------------------------------------------------------------------------------
 select employee_id, last_name, manager_id
 from employees
-where manager_id in (100, 101, 201); -- 100, 101, 201번 상사의 부하가 누구인지
+where manager_id in (100, 101, 201); -- 100, 101, 201번 상사의 부하가 누구인지, 실선
 
 select employee_id, last_name, manager_id
 from employees
@@ -76,7 +76,7 @@ where last_name like '%r'; -- like는 문자와 사용
 -- 과제] 이름에 s가 포함된 사원들의 이름을 조회하라.
 select last_name
 from employees
-where last_name like '%S%';
+where last_name like '%s%';
 
 -- 과제] 2005년에 입사한 사원들의 이름, 입사일을 조회하라.
 select last_name, hire_date
@@ -149,7 +149,7 @@ where manager_id is null and salary >= 20000;
 
 select last_name, salary
 from employees
-where not (manager_id is null and salary >= 20000);
+where not (manager_id is null and salary >= 20000); -- 논리 연산자 : 가장 마지막에 처리, ()로 묶는다
 
 -- 과제] 월급이 $5000 이상 $12000 이하이다, 그리고
 --       20번이나 50번 부서에 일하는 사원들의 이름, 월급, 부서번호를 조회하라.

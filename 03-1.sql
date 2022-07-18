@@ -1,10 +1,12 @@
+-- single function(파라미터가 1개인 경우)
+
 desc dual
 select * from dual;
 
 select lower('SQL Course')
 from dual;
 
-select upper('SQL Course')
+select upper ('SQL Course')
 from dual;
 
 select initcap('SQL course')
@@ -28,7 +30,7 @@ from dual;
 select substr('HelloWorld', 2, 5)
 from dual;
 
-select substr('Hello', -1,1)
+select substr('Hello', -1, 1)
 from dual;
 
 select length('Hello')
@@ -52,24 +54,27 @@ from dual;
 select trim('H' from 'Hello')
 from dual;
 
-select trim(' ' from ' Hello ')
+select trim('l' from 'Hello')
+from dual;
+
+select trim(' ' from 'Hello ')
 from dual;
 
 -- 과제] 위 query에서 ' '가 trim 됐음을 눈으로 확인할 수 있게 조회하라.
-select '|' || trim(' ' from ' Hello ') || '|'
+select '|' || trim(' ' from 'Hello ') || '|'
 from dual;
 
-select trim( ' Hello World ')
+select trim(' Hello World ')
 from dual;
 
 select employee_id, concat(first_name, last_name) name,
-job_id, length(last_name), instr(last_name, 'a') "Contains 'a'?"
+    job_id, length(last_name), instr(last_name, 'a') "Contains 'a'?"
 from employees
 where substr(job_id, 4) = 'PROG';
 
 -- 과제] 아래 문장에서, where 절을 like 로 refactoring 하라.
 select employee_id, concat(first_name, last_name) name,
-job_id, length(last_name), instr(last_name, 'a') "Contains 'a'?"
+    job_id, length(last_name), instr(last_name, 'a') "Contains 'a'?"
 from employees
 where job_id like '%PROG';
 
@@ -77,28 +82,28 @@ where job_id like '%PROG';
 --      이름은 대문자, 나머지는 소문자로 출력한다.
 select initcap(last_name), length(last_name)
 from employees
-where last_name like 'J%' and
-    last_name like 'A%' and
+where last_name like 'J%' or
+    last_name like 'A%' or
     last_name like 'M%';
 -------------------------------------------------------------------------------------
 select round(46.926, 2)
 from dual;
 
-select trunc(45.926, 2)
+select trunc(46.926, 2)
 from dual;
 
 select mod(1600, 300)
 from dual;
 
-select round(45.923, 0), round(45.923)
+select round(42.923, 0), round(42.923)
 from dual;
 
-select trunc(45.923,0)
+select trunc(45.923, 0)
 from dual;
 
 -- 과제] 사원들의 이름, 월급, 15.5% 인상된 월급(New Salary, 정수), 인상액(Increase)을 조회하라.
 select last_name, salary,
-    round(salary * 1.155) "New Salary", 
+    round(salary * 1.155) "New Salary",
     round(salary * 0.155) "Increase"
 from employees;
 -------------------------------------------------------------------------------------
@@ -132,6 +137,12 @@ from dual;
 select next_day('2022/07/14', 7)
 from dual;
 
+select next_day('2022/07/14', 'thursday')
+from dual;
+
+select next_day('2022/07/14', 'thu')
+from dual;
+
 select last_day('2022/07/14')
 from dual;
 
@@ -143,6 +154,10 @@ where months_between(sysdate, hire_date) >= 12 * 20;
 
 -- 과제] 사원들의 이름, 월급그래프를 조회하라.
 --      그래프는 $1000 당 * 하나를 표시한다.
+select last_name, rpad(' ', salary / 1000 + 1, '*')
+from employees;
+
+-- 과제] 위 그래프를 월급 기준 내림차순 정렬하라.
 select last_name, rpad(' ', salary / 1000 + 1, '*') sal
-from employees 
+from employees
 order by sal desc;
