@@ -112,6 +112,8 @@ on e.salary between j.min_salary and j.max_salary
 and j.job_id = 'IT_PROG';
 ------------------------------------------------------------------------------------
 -- self join(접두사 필수)
+-- 하나의 테이블이지만 다른 테이블인척 join하는 것
+
 select worker.last_name emp, manager.last_name mgr
 from employees worker join employees manager
 on worker.manager_id = manager.employee_id; -- 각 사원의 상사가 누구인지 조회한다

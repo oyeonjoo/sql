@@ -1,12 +1,12 @@
 -- DML(Data Manipulation Language)
 
-drop table emp; -- drop table: table 삭제
-drop table dept;
+drop table emp2;
+drop table dept2;
 
-create table emp(
+create table emp2(
 employee_id number(6),
 first_name varchar2(20),
-last_name varchar2(25), -- 바이트
+last_name varchar2(25),
 email varchar2(25),
 phone_number varchar2(20),
 hire_date date,
@@ -16,93 +16,90 @@ commission_pct number(2, 2),
 manager_id number(6),
 department_id number(4));
 
-create table dept(
-department_id number(4),
+create table dept2(
+department_id number (4),
 department_name varchar2(30),
 manager_id number(6),
 location_id number(4));
 
-insert into dept(department_id, department_name, manager_id, location_id) -- 필드 네임 나열
-values(300, 'Public Relation', 100, 1700); -- 필드 밸류 나열, 필드 네임과 갯수 일치 해야한다
+insert into dept2(department_id, department_name, manager_id, location_id)
+values(300, 'Public Relation', 100, 1700); 
 
-insert into dept(department_id, department_name)
+insert into dept2(department_id, department_name)
 values(310, 'Purchasing');
 
 -- 과제] row 2건이 insert 성공됐는지 확인하라.
 select *
-from dept;
+from dept2;
 
-commit; -- insert 해서 메모리에 저장된 데이터를 디스크에 기록
+commit;
 
--- insert 부터 commit 까지의 과정을 transaction 이라고 한다.(select 제외)
--- 업무의 시작부터 끝까지의 과정이 transaction 이다. DML 의 집합이다(persistence 관점에서.
-
-insert into emp(employee_id, first_name, last_name,
+insert into emp2(employee_id, first_name, last_name,
                 email, phone_number, hire_date,
                 job_id, salary, commission_pct,
                 manager_id, department_id)
 values(300, 'Louis', 'Pop',
-         'Pop@gmail.com', '010-378-1278', sysdate,
-         'AC_ACCOUNT', 6900, null,
-         205, 110);
-       
-insert into emp
+        'Pop@gmail.com', '010-378-1278', sysdate,
+        'AC_ACCOUNT', 6900, null,
+        205, 110);
+        
+insert into emp2
 values(310, 'Jark', 'Klein',
-        'Klein@gmail.com', '010-753-4635', to_date('2022/06/15', 'YYYY/MM/DD'),
+        'Klein@gmail.com', '010-753-4653', to_date('2022/06/15', 'YYYY/MM/DD'),
         'IT_PROG', 8000, null,
         120, 190);
-
-insert into emp
+        
+insert into emp2
 values(320, 'Terry', 'Benard',
         'Benard@gmail.com', '010-632-0972', '2022/07/20',
         'AD_PRES', 5000, .2,
         100, 30);
-              
-commit; 
+        
+commit;
 
-drop table sa_reps;
+drop table sa_reps2;
 -------------------------------------------------------------------------------------
-create table sa_reps(
+create table sa_reps2(
 id number(6),
 name varchar2(25),
 salary number(8, 2),
 commission_pct number(2, 2));
 
-insert into sa_reps(id, name, salary, commission_pct)
+insert into sa_reps2(id, name, salary, commission_pct)
     select employee_id, last_name, salary, commission_pct
     from employees
-    where job_id like '%REP%'; -- 서브쿼리를 이용하면 n개의 데이터를 한번에 넣을 수 있다    
-commit;    
+    where job_id like '%REP%';
+commit;
 
 declare
     base number(6) := 400;
 begin
     for i in 1..10 loop
-        insert into sa_reps(id, name, salary, commission_pct)
-        values(base + i,  'n' || (base + i), base + i, i * 0.01);
+        insert into sa_reps2(id, name, salary, commission_pct)
+        values(base + i, 'n' || (base + i), base + i, i * 0.01);
     end loop;
-end; -- 프로시저
+end;
 /
-select * from sa_reps;
+select * from sa_reps2;
 
 -- 과제] procedure 로 insert 한 row들을 조회하라.
 select *
-from sa_reps
+from sa_reps2
 where id > 400;
 -------------------------------------------------------------------------------------
 -- update(기존 row의 필드값을 변경하는 것)
 
 select employee_id, salary, job_id
-from emp
+from emp2
 where employee_id = 300;
 
-update emp
+update emp2
 set salary = 9000, job_id = null
 where employee_id = 300;
 
-commit; -- 커밋 이후부터 rollback
+commit;
 
-update emp
+update emp2
 set job_id = (select job_id
                 from employees
                 where employee_id = 205),
@@ -112,47 +109,47 @@ set job_id = (select job_id
 where employee_id = 300;
 
 select job_id, salary
-from emp
+from emp2
 where employee_id = 300;
 
-rollback; -- 트랜젝션 했던 것을 취소한다(다시 돌아간다), 커밋 이후부터
+rollback;
 
 select job_id, salary
-from emp
+from emp2
 where employee_id = 300;
 
-update emp
+update emp2
 set (job_id, salary) = (
     select job_id, salary
     from employees
     where employee_id = 205)
-where employee_id = 300; -- 2개의 서브쿼리를 줄인 것
+where employee_id = 300;
 
 commit;
 -------------------------------------------------------------------------------------
 -- delete
 
-delete dept
+delete dept2
 where department_id = 300;
 
 select *
-from dept;
+from dept2;
 
 rollback;
 
 select *
-from dept; -- 메모리에서 진행중인 것이라 가능(커밋 전), 커밋을 하면 메모리에 기록이 되기때문에 불가능하다
+from dept2;
 
 select *
-from emp;
+from emp2;
 
-delete emp
+delete emp2
 where department_id = (
     select department_id
     from departments
     where department_name = 'Contracting');
 
 select *
-from emp;
+from emp2;
 
 commit;
