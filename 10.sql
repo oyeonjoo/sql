@@ -39,7 +39,7 @@ create table depts(
 department_id number(3) constraint depts_deptid_pk primary key, -- pk 지정
 department_name varchar2(20)); -- constraint 제약 조건(필드 밸류 제약)
 
-desc user_constraints -- data dictionary
+desc user_constraints -- data dictionary 해당 스키마가 어떤 데이터를 가지고 있는지 확인할 수 있다.
 
 select constraint_name, constraint_type, table_name
 from user_constraints;
@@ -52,7 +52,7 @@ salary number(6) constraint emps_sal_ck check(salary > 1000),
 department_id number(3),
 constraint emps_email_uk unique(email),
 constraint emps_deptid_fk foreign key(department_id)
-    references depts(department_id)); -- 참조한다
+    references depts(department_id)); -- 참조한다(복사해온다)
 
 -- DDL 은 자동으로 commit이 일어난다? DCL?
 
@@ -92,8 +92,9 @@ job_id varchar2(10) constraint emp_jobid_nn not null,
 salary number(8) constraint emp_salary_ck check(salary > 0),
 commission_pct number(2, 2),
 manager_id number(6) constraint emp_managerid_fk references employees(employee_id),
-department_id number(4) constraint emp_dept_fk references hr.departments(department_id));
+department_id number(4) constraint emp_dept_fk references hr.departments(department_id)); -- 권한을 부여 받아야 참조 가능하다
 -------------------------------------------------------------------------------------
+-- on delete
 drop table gu cascade constraints;
 drop table dong cascade constraints;
 drop table dong2 cascade constraints;
@@ -112,7 +113,7 @@ dong_id number(4) primary key,
 dong_name varchar2(12) not null,
 gu_id number(3) references gu(gu_id) on delete set null); -- gu가 del되면 dong은 null 하겠다
 -- auto commit
--- insert into 부터 트랜지션 시작
+-- insert into 부터 트랜잭션 시작
 insert into gu values(100, '강남구');
 insert into gu values(200, '노원구');
 

@@ -1,7 +1,7 @@
 -- view
 -- view는 쿼리의 별명이다, 데이터를 담는 것이 아니라 보여주는 것이다
--- view 는 read only로 만드는 것이 좋다
-
+-- view는 read only로 만드는 것이 좋다
+-- hr user
 drop view empvu80;
 
 create view empvu80 as
@@ -30,7 +30,7 @@ desc empvu80
  
  create table teams as
     select department_id team_id, department_name team_name
-    from departments;
+    from hr.departments;
 
 create view team50 as
     select *
@@ -52,7 +52,7 @@ create or replace view team50 as
 
 insert into team50 values(50, 'IT Support');
 select count(*) from teams;
-insert into team50 values(301, 'IT Sipport'); -- error, view WITH CHECK OPTION where-clause violation
+insert into team50 values(301, 'IT Support'); -- error, view WITH CHECK OPTION where-clause violation
 
 create or replace view empvu10(employee_num, employee_name, job_title) as
     select employee_id, last_name, job_id
@@ -62,4 +62,16 @@ create or replace view empvu10(employee_num, employee_name, job_title) as
 
 insert into empvu10 values(501, 'abel', 'Sales'); -- error, cannot perform a DML
 --------------------------------------------------------------------------------
-drop sequence 
+drop sequence team_teamid_seq;
+
+create sequence team_teamid_seq;
+
+select team_teamid_seq.nextval from dual;
+select team_teamid_seq.nextval from dual;
+select team_teamid_seq.currval from dual;
+
+insert into teams
+values(team_teamid_seq.nextval, 'Marketing');
+
+select * from teams
+where team_id = 3;
