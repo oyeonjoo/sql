@@ -54,7 +54,7 @@ constraint emps_email_uk unique(email),
 constraint emps_deptid_fk foreign key(department_id)
     references depts(department_id)); -- 참조한다(복사해온다)
 
--- DDL 은 자동으로 commit이 일어난다? DCL?
+-- DDL 은 자동으로 commit이 일어난다
 
 select constraint_name, constraint_type, table_name
 from user_constraints;
